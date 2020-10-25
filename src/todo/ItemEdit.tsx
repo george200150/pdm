@@ -58,9 +58,13 @@ const ItemEdit: React.FC<ItemEditProps> = ({ history, match }) => {
 
   const handleDelete = () => {
     const editedItem = item
-        ? { ...item, name, hasFlowers, bloomDate, location, photo }
-  : { name, hasFlowers, bloomDate, location, photo };
-    deleteItem && deleteItem(editedItem).then(() => history.goBack());
+        ? {...item, name, hasFlowers, bloomDate, location, photo}
+        : {name, hasFlowers, bloomDate, location, photo};
+    if (editedItem?.name !== '') {
+      deleteItem && deleteItem(editedItem).then(() => history.goBack());
+    } else {
+      alert("CANNOT DELETE NOTHING!")
+    }
   };
 
   log('render');
