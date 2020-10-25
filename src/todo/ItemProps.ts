@@ -1,10 +1,8 @@
-import {NECoords} from "./NECoords";
-
 export interface ItemProps {
-    id?: string;
-    name: string;
-    // bloomingDate?: Date;
-    // hasFlowers: boolean;
-    // location: NECoords;
-    // photo: Blob;
+  _id?: string;
+  name: string;
+  hasFlowers: boolean;
+  bloomDate: string;
+  location: string;
+  photo: string;
 }
