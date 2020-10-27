@@ -1,4 +1,4 @@
-export interface ItemProps {
+export interface PlantProps {
   _id?: string;
   name: string;
   hasFlowers: boolean;

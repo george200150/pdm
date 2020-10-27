@@ -1,17 +1,17 @@
 import React, { useCallback, useContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { getLogger } from '../core';
-import { ItemProps } from './ItemProps';
-import { createItem, getItems, newWebSocket, updateItem, eraseItem } from './itemApi';
+import { PlantProps } from './PlantProps';
+import { createItem, getItems, newWebSocket, updateItem, eraseItem } from './plantApi';
 import { AuthContext } from '../auth';
 
-const log = getLogger('ItemProvider');
+const log = getLogger('PlantProvider');
 
-type SaveItemFn = (item: ItemProps) => Promise<any>;
-type DeleteItemFn = (item: ItemProps) => Promise<any>;
+type SaveItemFn = (item: PlantProps) => Promise<any>;
+type DeleteItemFn = (item: PlantProps) => Promise<any>;
 
 export interface ItemsState {
-  items?: ItemProps[],
+  items?: PlantProps[],
   fetching: boolean,
   fetchingError?: Error | null,
   saving: boolean,
@@ -93,7 +93,7 @@ interface ItemProviderProps {
   children: PropTypes.ReactNodeLike,
 }
 
-export const ItemProvider: React.FC<ItemProviderProps> = ({ children }) => {
+export const PlantProvider: React.FC<ItemProviderProps> = ({ children }) => {
   const { token } = useContext(AuthContext);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { items, fetching, fetchingError, saving, savingError, deleting, deletingError } = state;
@@ -139,7 +139,7 @@ export const ItemProvider: React.FC<ItemProviderProps> = ({ children }) => {
     }
   }
 
-  async function saveItemCallback(item: ItemProps) {
+  async function saveItemCallback(item: PlantProps) {
     try {
       log('saveItem started');
       dispatch({ type: SAVE_ITEM_STARTED });
@@ -152,7 +152,7 @@ export const ItemProvider: React.FC<ItemProviderProps> = ({ children }) => {
     }
   }
 
-  async function deleteItemCallback(item: ItemProps) {
+  async function deleteItemCallback(item: PlantProps) {
     try {
       log("delete started");
       dispatch({type: DELETE_ITEM_STARTED});
@@ -177,9 +177,9 @@ export const ItemProvider: React.FC<ItemProviderProps> = ({ children }) => {
         }
         const { type, payload: item } = message;
         log(`ws message, item ${type}`);
-        /*if (type === 'created' || type === 'updated') {
+        if (type === 'created' || type === 'updated') {
           dispatch({ type: SAVE_ITEM_SUCCEEDED, payload: { item } });
-        }*/ // ws error - on refresh after update - returns 500
+        } // ws error - on refresh after update - returns 500
       });
     }
     return () => {

@@ -13,13 +13,13 @@ import {
   IonToolbar
 } from '@ionic/react';
 import { add } from 'ionicons/icons';
-import Item from './Item';
+import Plant from './Plant';
 import { getLogger } from '../core';
-import { ItemContext } from './ItemProvider';
+import { ItemContext } from './PlantProvider';
 
-const log = getLogger('ItemList');
+const log = getLogger('PlantList');
 
-const ItemList: React.FC<RouteComponentProps> = ({ history }) => {
+const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
   const { items, fetching, fetchingError } = useContext(ItemContext);
   log('render');
   return (
@@ -35,7 +35,7 @@ const ItemList: React.FC<RouteComponentProps> = ({ history }) => {
           <IonList>
 
             {items.map(({ _id, name, hasFlowers, bloomDate, location, photo }) => (
-                <Item
+                <Plant
               key={_id}
               _id={_id}
               name={name}
@@ -44,7 +44,6 @@ const ItemList: React.FC<RouteComponentProps> = ({ history }) => {
               location={location}
               photo={photo}
               onEdit={(id) => history.push(`/plant/${id}`)}
-              // TODO: /plant/${id} ???
                 />
               ))}
 
@@ -63,4 +62,4 @@ const ItemList: React.FC<RouteComponentProps> = ({ history }) => {
   );
 };
 
-export default ItemList;
+export default PlantList;

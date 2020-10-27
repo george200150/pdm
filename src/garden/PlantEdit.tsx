@@ -9,24 +9,23 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-
   IonCheckbox,
   IonLabel,
   IonItem,
   IonDatetime
 } from '@ionic/react';
 import { getLogger } from '../core';
-import { ItemContext } from './ItemProvider';
+import { ItemContext } from './PlantProvider';
 import { RouteComponentProps } from 'react-router';
-import { ItemProps } from './ItemProps';
+import { PlantProps } from './PlantProps';
 
-const log = getLogger('ItemEdit');
+const log = getLogger('PlantEdit');
 
 interface ItemEditProps extends RouteComponentProps<{
   id?: string;
 }> {}
 
-const ItemEdit: React.FC<ItemEditProps> = ({ history, match }) => {
+const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
   const { items, saving, savingError, saveItem, deleteItem } = useContext(ItemContext);
 
   const [name, setName] = useState('');
@@ -36,7 +35,7 @@ const ItemEdit: React.FC<ItemEditProps> = ({ history, match }) => {
   const [location, setLocation] = useState('');
   const [photo, setPhoto] = useState('');
 
-  const [item, setItem] = useState<ItemProps>();
+  const [item, setItem] = useState<PlantProps>();
 
   useEffect(() => {
     log('useEffect');
@@ -58,13 +57,9 @@ const ItemEdit: React.FC<ItemEditProps> = ({ history, match }) => {
 
   const handleDelete = () => {
     const editedItem = item
-        ? {...item, name, hasFlowers, bloomDate, location, photo}
-        : {name, hasFlowers, bloomDate, location, photo};
-    if (editedItem?.name !== '') {
-      deleteItem && deleteItem(editedItem).then(() => history.goBack());
-    } else {
-      alert("CANNOT DELETE NOTHING!")
-    }
+        ? { ...item, name, hasFlowers, bloomDate, location, photo }
+  : { name, hasFlowers, bloomDate, location, photo };
+    deleteItem && deleteItem(editedItem).then(() => history.goBack());
   };
 
   log('render');
@@ -81,11 +76,12 @@ const ItemEdit: React.FC<ItemEditProps> = ({ history, match }) => {
       </IonHeader>
       <IonContent>
 
-
+        // TODO: use Cards insead of Ion ITEMS
         <IonItem>
           <IonLabel>Name: </IonLabel>
           <IonInput value={name} onIonChange={(e) => setName(e.detail.value || "")}/>
         </IonItem>
+
         <IonItem>
           <IonLabel>Location</IonLabel>
           <IonInput value={location} onIonChange={(e) => setLocation(String(e.detail.value))}/>
@@ -112,4 +108,4 @@ const ItemEdit: React.FC<ItemEditProps> = ({ history, match }) => {
   );
 };
 
-export default ItemEdit;
+export default PlantEdit;
