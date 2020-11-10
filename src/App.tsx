@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ItemEdit, ItemList } from './garden';
+import { PlantEdit, PlantList } from './garden';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,9 +32,9 @@ const App: React.FC = () => (
         <AuthProvider>
           <Route path="/login" component={Login} exact={true}/>
           <PlantProvider>
-            <PrivateRoute path="/plants" component={ItemList} exact={true}/>
-            <PrivateRoute path="/plant" component={ItemEdit} exact={true}/>
-            <PrivateRoute path="/plant/:id" component={ItemEdit} exact={true}/>
+            <PrivateRoute path="/plants" component={PlantList} exact={true}/>
+            <PrivateRoute path="/plant" component={PlantEdit} exact={true}/>
+            <PrivateRoute path="/plant/:id" component={PlantEdit} exact={true}/>
           </PlantProvider>
           <Route exact path="/" render={() => <Redirect to="/plants"/>}/>
         </AuthProvider>

@@ -1,25 +1,98 @@
 import axios from 'axios';
 import { authConfig, baseUrl, getLogger, withLogs } from '../core';
 import { PlantProps } from './PlantProps';
+import { Plugins } from "@capacitor/core";
 
-//const itemUrl = `http://${baseUrl}/api/item`;
+const { Storage } = Plugins;
 const itemUrl = `http://${baseUrl}/api/plant`;
 
-export const getItems: (token: string) => Promise<PlantProps[]> = token => {
+/*export const getItems: (token: string) => Promise<PlantProps[]> = token => {
   return withLogs(axios.get(itemUrl, authConfig(token)), 'getItems');
-}
+}*/
+export const getItems: (token: string) => Promise<PlantProps[]> = (token) => {
+  var result = axios.get(itemUrl, authConfig(token));
+  result.then(function (result) {
+    result.data.forEach(async (plant: PlantProps) => {
+      await Storage.set({
+        key: plant._id!,
+        value: JSON.stringify({
+          id: plant._id,
+          name: plant.name,
+          hasFlowers: plant.hasFlowers,
+          bloomDate: plant.bloomDate,
+          location: plant.location,
+          photo: plant.photo
+        }),
+      });
+    });
+  });
+  return withLogs(result, "getItems");
+};
 
-export const createItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
+
+/*export const createItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
   return withLogs(axios.post(itemUrl, item, authConfig(token)), 'createItem');
-}
+}*/
+export const createItem: (
+    token: string,
+    item: PlantProps
+) => Promise<PlantProps[]> = (token, plant) => {
+  var result = axios.post(itemUrl, plant, authConfig(token));
+  result.then(async function (r) {
+    var plant = r.data;
+    await Storage.set({
+      key: plant._id!,
+      value: JSON.stringify({
+        id: plant._id,
+        name: plant.name,
+        hasFlowers: plant.hasFlowers,
+        bloomDate: plant.bloomDate,
+        location: plant.location,
+        photo: plant.photo
+      }),
+    });
+  });
+  return withLogs(result, "createItem");
+};
 
-export const updateItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
+/*export const updateItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
   return withLogs(axios.put(`${itemUrl}/${item._id}`, item, authConfig(token)), 'updateItem');
-}
+}*/
+export const updateItem: (
+    token: string,
+    item: PlantProps
+) => Promise<PlantProps[]> = (token, plant) => {
+  var result = axios.put(`${itemUrl}/${plant._id}`, plant, authConfig(token));
+  result.then(async function (r) {
+    var plant = r.data;
+    await Storage.set({
+      key: plant._id!,
+      value: JSON.stringify({
+        id: plant._id,
+        name: plant.name,
+        hasFlowers: plant.hasFlowers,
+        bloomDate: plant.bloomDate,
+        location: plant.location,
+        photo: plant.photo
+      }),
+    });
+  });
+  return withLogs(result, "updateItem");
+};
 
-export const eraseItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
+/*export const eraseItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
   return withLogs(axios.delete(`${itemUrl}/${item._id}`, authConfig(token)), 'deleteItem');
-}
+}*/
+export const eraseItem: (
+    token: string,
+    item: PlantProps
+) => Promise<PlantProps[]> = (token, plant) => {
+  var result = axios.delete(`${itemUrl}/${plant._id}`, authConfig(token));
+  result.then(async function (r) {
+    await Storage.remove({ key: plant._id! });
+  });
+  return withLogs(result, "deleteItem");
+};
 
 interface MessageData {
   type: string;

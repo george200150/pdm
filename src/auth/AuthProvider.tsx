@@ -2,16 +2,21 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getLogger } from '../core';
 import { login as loginApi } from './authApi';
+import { Plugins } from "@capacitor/core";
+
+const { Storage } = Plugins;
 
 const log = getLogger('AuthProvider');
 
 type LoginFn = (username?: string, password?: string) => void;
+type LogoutFn = () => void;
 
 export interface AuthState {
   authenticationError: Error | null;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   login?: LoginFn;
+  logout?: LogoutFn;
   pendingAuthentication?: boolean;
   username?: string;
   password?: string;
@@ -23,7 +28,7 @@ const initialState: AuthState = {
   isAuthenticating: false,
   authenticationError: null,
   pendingAuthentication: false,
-  token: '',
+  token: "",
 };
 
 export const AuthContext = React.createContext<AuthState>(initialState);
@@ -34,11 +39,25 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, setState] = useState<AuthState>(initialState);
-  const { isAuthenticated, isAuthenticating, authenticationError, pendingAuthentication, token } = state;
+  const {
+    isAuthenticated,
+    isAuthenticating,
+    authenticationError,
+    pendingAuthentication,
+    token
+  } = state;
   const login = useCallback<LoginFn>(loginCallback, []);
+  const logout = useCallback<LogoutFn>(logoutCallback, []);
   useEffect(authenticationEffect, [pendingAuthentication]);
-  const value = { isAuthenticated, login, isAuthenticating, authenticationError, token };
-  log('render');
+  const value = {
+    isAuthenticated,
+    login,
+    logout,
+    isAuthenticating,
+    authenticationError,
+    token
+  };
+  log("render");
   return (
     <AuthContext.Provider value={value}>
       {children}
@@ -46,13 +65,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
 
   function loginCallback(username?: string, password?: string): void {
-    log('login');
+    log("login");
     setState({
       ...state,
       pendingAuthentication: true,
       username,
       password
     });
+  }
+  function logoutCallback(): void {
+    log("logout");
+    setState({
+      ...state,
+      isAuthenticated: false,
+      token: "",
+    });
+    (async () => {
+      await Storage.remove({ key: "user" });
+    })();
   }
 
   function authenticationEffect() {
@@ -63,6 +93,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     async function authenticate() {
+      var tokenStorage = await Storage.get({ key: "user" });
+      console.log("token "+tokenStorage.value);
+      if (tokenStorage.value) {
+        setState({
+          ...state,
+          token: tokenStorage.value,
+          pendingAuthentication: false,
+          isAuthenticated: true,
+          isAuthenticating: false,
+        });
+      }
       if (!pendingAuthentication) {
         log('authenticate, !pendingAuthentication, return');
         return;
@@ -79,6 +120,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           return;
         }
         log('authenticate succeeded');
+        await Storage.set({ key: "user", value: token });
         setState({
           ...state,
           token,

@@ -96,7 +96,10 @@ const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
           <IonLabel>HasFlowers: </IonLabel>
           <IonCheckbox checked={hasFlowers} onIonChange={(e) => setHasFlowers(e.detail.checked)}/>
         </IonItem>
-        <IonDatetime value={bloomDate} onIonChange={e => setBloomDate(e.detail.value!)}/>
+        <IonItem>
+          <IonLabel>BloomDate: </IonLabel>
+          <IonDatetime value={bloomDate} onIonChange={e => setBloomDate(e.detail.value!)}/>
+        </IonItem>
         <IonLoading isOpen={saving} />
         {savingError && (
             <div>{savingError.message || 'Failed to save plant'}</div>
