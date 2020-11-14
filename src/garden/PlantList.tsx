@@ -25,9 +25,22 @@ import { ItemContext } from './PlantProvider';
 import {AuthContext} from "../auth";
 import {PlantProps} from "./PlantProps";
 
+import {useAppState} from './useAppState';
+import {useNetwork} from './useNetwork';
+//import {useBackgroundTask} from "./useBackgroundTask";
+
+
+
 const log = getLogger('PlantList');
 
 const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
+    const {appState} = useAppState();
+    const {networkStatus} = useNetwork();
+    /*useBackgroundTask(() => new Promise(resolve => {
+        console.log("My Background Task");
+        resolve();
+    }));*/
+
   const { items, fetching, fetchingError } = useContext(ItemContext);
   const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(
       false
@@ -63,7 +76,7 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
   useEffect(() => {
     if (filter && items) {
       const boolType = filter === "has flowers";
-      setItemsShow(items.filter((plant) => plant.hasFlowers == boolType));
+      setItemsShow(items.filter((plant) => plant.hasFlowers === boolType));
     }
   }, [filter]);
 
@@ -104,6 +117,10 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
                 </IonSelectOption>
             ))}
           </IonSelect>
+
+          <div>App state is {JSON.stringify(appState)}</div>
+          <div>Network status is {JSON.stringify(networkStatus)}</div>
+
           {itemsShow &&
           itemsShow.map((plant: PlantProps) => {
             return (
@@ -115,6 +132,7 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
                     bloomDate={plant.bloomDate}
                     location={plant.location}
                     photo={plant.photo}
+                    userId={plant.userId}
                     onEdit={(id) => history.push(`/plant/${id}`)}
                 />
             );

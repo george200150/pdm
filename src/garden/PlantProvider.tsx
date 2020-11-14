@@ -4,6 +4,7 @@ import { getLogger } from '../core';
 import { PlantProps } from './PlantProps';
 import { createItem, getItems, newWebSocket, updateItem, eraseItem } from './plantApi';
 import { AuthContext } from '../auth';
+import {Storage} from "@capacitor/core";
 
 const log = getLogger('PlantProvider');
 
@@ -51,7 +52,8 @@ const reducer: (state: ItemsState, action: ActionProps) => ItemsState =
       case FETCH_ITEMS_SUCCEEDED:
         return {...state, items: payload.items, fetching: false};
       case FETCH_ITEMS_FAILED:
-        return {...state, fetchingError: payload.error, fetching: false};
+        //return {...state, fetchingError: payload.error, fetching: false};
+        return {...state, items: payload.items, fetching: false};
       case SAVE_ITEM_STARTED:
         return {...state, savingError: null, saving: true};
       case SAVE_ITEM_SUCCEEDED:
@@ -94,7 +96,7 @@ interface ItemProviderProps {
 }
 
 export const PlantProvider: React.FC<ItemProviderProps> = ({ children }) => {
-  const { token } = useContext(AuthContext);
+  const { token, _id } = useContext(AuthContext);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { items, fetching, fetchingError, saving, savingError, deleting, deletingError } = state;
   useEffect(getItemsEffect, [token]);
@@ -121,6 +123,7 @@ export const PlantProvider: React.FC<ItemProviderProps> = ({ children }) => {
     }
 
     async function fetchItems() {
+      console.log("Entering PlantProvider - fetchItems")
       if (!token?.trim()) {
         return;
       }
@@ -128,13 +131,56 @@ export const PlantProvider: React.FC<ItemProviderProps> = ({ children }) => {
         log('fetchItems started');
         dispatch({ type: FETCH_ITEMS_STARTED });
         const items = await getItems(token);
+        console.log("(try) ITEMS FROM getItems CALL: ");
+        console.log(items)
         log('fetchItems succeeded');
         if (!canceled) {
           dispatch({ type: FETCH_ITEMS_SUCCEEDED, payload: { items } });
         }
       } catch (error) {
         log('fetchItems failed');
-        dispatch({ type: FETCH_ITEMS_FAILED, payload: { error } });
+
+        const allKeys = Storage.keys();
+        let promisedItems;
+        var i;
+
+        promisedItems = await allKeys.then(function (allKeys) { // local storage also storages the login token, therefore we must get only Plant objects
+
+          const promises = [];
+          for (i = 0; i < allKeys.keys.length; i++) {
+            const promiseItem = Storage.get({key: allKeys.keys[i]});
+
+            promises.push(promiseItem);
+          }
+          return promises;
+        });
+
+        const plantItems = [];
+        for (i = 0; i < promisedItems.length; i++) {
+          const promise = promisedItems[i];
+          const plant = await promise.then(function (it) {
+            try {
+              var object = JSON.parse(it.value);
+            } catch (e) {
+              return null;
+            }
+            console.log(typeof object);
+            console.log(object);
+            if (object.userId === _id) { // check ownership of each object
+              return object;
+            }
+            return null;
+          });
+          if (plant != null) {
+            plantItems.push(plant);
+          }
+        }
+
+        console.log("(catch) ITEMS FROM getItems CALL: ")
+        console.log(plantItems)
+        const items = plantItems;
+        alert("OFFLINE!");
+        dispatch({ type: FETCH_ITEMS_FAILED, payload: { items: items } });
       }
     }
   }

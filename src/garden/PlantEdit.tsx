@@ -37,6 +37,8 @@ const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
 
   const [item, setItem] = useState<PlantProps>();
 
+  const [userId, setUserId] = useState('');
+
   useEffect(() => {
     log('useEffect');
     const routeId = match.params.id || '';
@@ -51,14 +53,14 @@ const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
     }
   }, [match.params.id, items]);
   const handleSave = () => {
-    const editedItem = item ? { ...item, name, hasFlowers, bloomDate, location, photo } : { name, hasFlowers, bloomDate, location, photo };
+    const editedItem = item ? { ...item, name, hasFlowers, bloomDate, location, photo, userId } : { name, hasFlowers, bloomDate, location, photo, userId };
     saveItem && saveItem(editedItem).then(() => history.goBack());
   };
 
   const handleDelete = () => {
     const editedItem = item
-        ? { ...item, name, hasFlowers, bloomDate, location, photo }
-  : { name, hasFlowers, bloomDate, location, photo };
+        ? { ...item, name, hasFlowers, bloomDate, location, photo, userId }
+  : { name, hasFlowers, bloomDate, location, photo, userId };
     deleteItem && deleteItem(editedItem).then(() => history.goBack());
   };
 

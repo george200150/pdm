@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { authConfig, baseUrl, getLogger, withLogs } from '../core';
-import { PlantProps } from './PlantProps';
-import { Plugins } from "@capacitor/core";
+import {authConfig, baseUrl, getLogger, withLogs} from '../core';
+import {PlantProps} from './PlantProps';
+import {Plugins} from "@capacitor/core";
 
 const { Storage } = Plugins;
 const itemUrl = `http://${baseUrl}/api/plant`;
@@ -9,9 +9,13 @@ const itemUrl = `http://${baseUrl}/api/plant`;
 /*export const getItems: (token: string) => Promise<PlantProps[]> = token => {
   return withLogs(axios.get(itemUrl, authConfig(token)), 'getItems');
 }*/
+
+
 export const getItems: (token: string) => Promise<PlantProps[]> = (token) => {
+
   var result = axios.get(itemUrl, authConfig(token));
   result.then(function (result) {
+    console.log("Entering plantApi - getItems - No Network Will Throw HERE!")
     result.data.forEach(async (plant: PlantProps) => {
       await Storage.set({
         key: plant._id!,
@@ -21,14 +25,14 @@ export const getItems: (token: string) => Promise<PlantProps[]> = (token) => {
           hasFlowers: plant.hasFlowers,
           bloomDate: plant.bloomDate,
           location: plant.location,
-          photo: plant.photo
+          photo: plant.photo,
+          userId: plant.userId
         }),
       });
     });
   });
   return withLogs(result, "getItems");
 };
-
 
 /*export const createItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
   return withLogs(axios.post(itemUrl, item, authConfig(token)), 'createItem');

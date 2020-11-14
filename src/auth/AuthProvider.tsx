@@ -21,6 +21,7 @@ export interface AuthState {
   username?: string;
   password?: string;
   token: string;
+  _id: string;
 }
 
 const initialState: AuthState = {
@@ -29,6 +30,7 @@ const initialState: AuthState = {
   authenticationError: null,
   pendingAuthentication: false,
   token: "",
+  _id: "",
 };
 
 export const AuthContext = React.createContext<AuthState>(initialState);
@@ -44,7 +46,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAuthenticating,
     authenticationError,
     pendingAuthentication,
-    token
+    token,
+    _id
   } = state;
   const login = useCallback<LoginFn>(loginCallback, []);
   const logout = useCallback<LogoutFn>(logoutCallback, []);
@@ -55,7 +58,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     logout,
     isAuthenticating,
     authenticationError,
-    token
+    token,
+    _id
   };
   log("render");
   return (
@@ -82,6 +86,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     });
     (async () => {
       await Storage.remove({ key: "user" });
+      await Storage.remove({ key: "_id" });
     })();
   }
 
@@ -94,11 +99,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     async function authenticate() {
       var tokenStorage = await Storage.get({ key: "user" });
+      var _idStorage = await Storage.get({ key: "_id" });
       console.log("token "+tokenStorage.value);
       if (tokenStorage.value) {
         setState({
           ...state,
           token: tokenStorage.value,
+          _id: _idStorage.value!,
           pendingAuthentication: false,
           isAuthenticated: true,
           isAuthenticating: false,
@@ -115,15 +122,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           isAuthenticating: true,
         });
         const { username, password } = state;
-        const { token } = await loginApi(username, password);
+        const { token, _id } = await loginApi(username, password);
+        console.log("_id");
+        console.log(_id);
         if (canceled) {
           return;
         }
         log('authenticate succeeded');
-        await Storage.set({ key: "user", value: token });
+        await Storage.set({ key: "user", value: token }); // save the login token in the local storage (on refresh no more need to re-login)
+        await Storage.set({ key: "_id", value: _id }); // save the login token in the local storage (on refresh no more need to re-login)
         setState({
           ...state,
           token,
+          _id,
           pendingAuthentication: false,
           isAuthenticated: true,
           isAuthenticating: false,

@@ -5,4 +5,5 @@ export interface PlantProps {
   bloomDate: string;
   location: string;
   photo: string;
+  userId: string;
 }

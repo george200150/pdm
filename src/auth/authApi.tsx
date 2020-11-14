@@ -5,6 +5,7 @@ const authUrl = `http://${baseUrl}/api/auth/login`;
 
 export interface AuthProps {
   token: string;
+  _id: string;
 }
 
 export const login: (username?: string, password?: string) => Promise<AuthProps> = (username, password) => {

@@ -21,14 +21,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c599b773-102a-4217-ae4b-99fdd70af7cb" name="Default Changelist" comment="created architecture">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/auth/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/AuthProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/PrivateRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/PrivateRoute.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/auth/authApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/authApi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/garden/PlantEdit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantEdit.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/garden/PlantList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/garden/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/garden/PlantProps.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantProps.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/garden/PlantProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantProvider.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/garden/plantApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/plantApi.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,7 +54,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../laborator6_js/texture" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../my-ionic-app-auth (1)" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -113,7 +111,9 @@
       <workItem from="1604568883708" duration="1719000" />
       <workItem from="1604602375838" duration="616000" />
       <workItem from="1604787382711" duration="233000" />
-      <workItem from="1604997795064" duration="5364000" />
+      <workItem from="1604997795064" duration="7207000" />
+      <workItem from="1605208928839" duration="651000" />
+      <workItem from="1605369288291" duration="20666000" />
     </task>
     <task id="LOCAL-00001" summary="created architecture">
       <created>1603531533439</created>
@@ -153,26 +153,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="210" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603527519674" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1604602395362">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1605383027664">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1604602395362" />
-    <state width="1899" height="282" key="GridCell.Tab.0.bottom" timestamp="1603633607781">
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605383027664" />
+    <state width="1899" height="282" key="GridCell.Tab.0.bottom" timestamp="1605389114387">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603633607781" />
-    <state width="1899" height="282" key="GridCell.Tab.0.center" timestamp="1603633607781">
+    <state width="1899" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605389114387" />
+    <state width="1899" height="282" key="GridCell.Tab.0.center" timestamp="1605389114387">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603633607781" />
-    <state width="1899" height="282" key="GridCell.Tab.0.left" timestamp="1603633607781">
+    <state width="1899" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605389114387" />
+    <state width="1899" height="282" key="GridCell.Tab.0.left" timestamp="1605389114387">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603633607781" />
-    <state width="1899" height="282" key="GridCell.Tab.0.right" timestamp="1603633607781">
+    <state width="1899" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605389114387" />
+    <state width="1899" height="282" key="GridCell.Tab.0.right" timestamp="1605389114387">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603633607781" />
+    <state width="1899" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605389114387" />
     <state x="461" y="165" key="SettingsEditor" timestamp="1602603686710">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -181,17 +181,33 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603294597858" />
+    <state x="565" y="130" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1605386341695">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="565" y="130" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1605386341695" />
     <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1603294582352">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603294582352" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1603533804382">
+    <state x="616" y="240" key="run.anything.popup" timestamp="1605388186540">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603533804382" />
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605388186540" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1603537623691">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603537623691" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/garden/PlantProvider.tsx</url>
+          <line>132</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
