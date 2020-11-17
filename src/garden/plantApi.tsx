@@ -6,10 +6,6 @@ import {Plugins} from "@capacitor/core";
 const { Storage } = Plugins;
 const itemUrl = `http://${baseUrl}/api/plant`;
 
-/*export const getItems: (token: string) => Promise<PlantProps[]> = token => {
-  return withLogs(axios.get(itemUrl, authConfig(token)), 'getItems');
-}*/
-
 
 export const getItems: (token: string) => Promise<PlantProps[]> = (token) => {
 
@@ -34,9 +30,7 @@ export const getItems: (token: string) => Promise<PlantProps[]> = (token) => {
   return withLogs(result, "getItems");
 };
 
-/*export const createItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
-  return withLogs(axios.post(itemUrl, item, authConfig(token)), 'createItem');
-}*/
+
 export const createItem: (
     token: string,
     item: PlantProps
@@ -59,9 +53,7 @@ export const createItem: (
   return withLogs(result, "createItem");
 };
 
-/*export const updateItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
-  return withLogs(axios.put(`${itemUrl}/${item._id}`, item, authConfig(token)), 'updateItem');
-}*/
+
 export const updateItem: (
     token: string,
     item: PlantProps
@@ -84,9 +76,7 @@ export const updateItem: (
   return withLogs(result, "updateItem");
 };
 
-/*export const eraseItem: (token: string, item: PlantProps) => Promise<PlantProps[]> = (token, item) => {
-  return withLogs(axios.delete(`${itemUrl}/${item._id}`, authConfig(token)), 'deleteItem');
-}*/
+
 export const eraseItem: (
     token: string,
     item: PlantProps
@@ -109,7 +99,9 @@ export const newWebSocket = (token: string, onMessage: (data: MessageData) => vo
   const ws = new WebSocket(`ws://${baseUrl}`);
   ws.onopen = () => {
     log('web socket onopen');
-    ws.send(JSON.stringify({ type: 'authorization', payload: { token } }));
+    const message = JSON.stringify({ type: 'authorization', payload: { token } });
+    console.log(message);
+    ws.send(message);
   };
   ws.onclose = () => {
     log('web socket onclose');

@@ -18,6 +18,7 @@ import { getLogger } from '../core';
 import { ItemContext } from './PlantProvider';
 import { RouteComponentProps } from 'react-router';
 import { PlantProps } from './PlantProps';
+import {AuthContext} from "../auth";
 
 const log = getLogger('PlantEdit');
 
@@ -28,6 +29,8 @@ interface ItemEditProps extends RouteComponentProps<{
 const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
   const { items, saving, savingError, saveItem, deleteItem } = useContext(ItemContext);
 
+  const { _id } = useContext(AuthContext);
+
   const [name, setName] = useState('');
   const [hasFlowers, setHasFlowers] = useState(true);
   const [bloomDate, setBloomDate] = useState('');
@@ -37,7 +40,7 @@ const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
 
   const [item, setItem] = useState<PlantProps>();
 
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState(_id);
 
   useEffect(() => {
     log('useEffect');
@@ -100,13 +103,12 @@ const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
         </IonItem>
         <IonItem>
           <IonLabel>BloomDate: </IonLabel>
-          <IonDatetime value={bloomDate} onIonChange={e => setBloomDate(e.detail.value!)}/>
+          <IonDatetime value={bloomDate} onIonChange={e => setBloomDate(e.detail.value!.substr(0, 10))}/>
         </IonItem>
         <IonLoading isOpen={saving} />
         {savingError && (
             <div>{savingError.message || 'Failed to save plant'}</div>
         )}
-
 
       </IonContent>
     </IonPage>
