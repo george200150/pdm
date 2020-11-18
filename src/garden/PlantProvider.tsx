@@ -4,12 +4,12 @@ import { getLogger } from '../core';
 import { PlantProps } from './PlantProps';
 import { createItem, getItems, newWebSocket, updateItem, eraseItem } from './plantApi';
 import { AuthContext } from '../auth';
-import {Storage} from "@capacitor/core";
+import { Storage } from "@capacitor/core";
 
 const log = getLogger('PlantProvider');
 
-type SaveItemFn = (item: PlantProps) => Promise<any>;
-type DeleteItemFn = (item: PlantProps) => Promise<any>;
+type SaveItemFn = (item: PlantProps, connected: boolean) => Promise<any>;
+type DeleteItemFn = (item: PlantProps, connected: boolean) => Promise<any>;
 
 export interface ItemsState {
   items?: PlantProps[],
@@ -68,7 +68,7 @@ const reducer: (state: ItemsState, action: ActionProps) => ItemsState =
         }
         return {...state, items, saving: false};
       case SAVE_ITEM_FAILED:
-        return {...state, savingError: payload.error, saving: false};
+        return {...state, savingError: payload.error, saving: false}; // never used
 
 
       case DELETE_ITEM_STARTED:
@@ -81,7 +81,7 @@ const reducer: (state: ItemsState, action: ActionProps) => ItemsState =
         return {...state, items, deleting: false};
       }
       case DELETE_ITEM_FAILED:
-        return {...state, deletingError: payload.error, deleting: false};
+        return {...state, deletingError: payload.error, deleting: false}; // never used
 
 
       default:
@@ -127,6 +127,7 @@ export const PlantProvider: React.FC<ItemProviderProps> = ({ children }) => {
       if (!token?.trim()) {
         return;
       }
+
       try {
         log('fetchItems started');
         dispatch({ type: FETCH_ITEMS_STARTED });
@@ -159,14 +160,15 @@ export const PlantProvider: React.FC<ItemProviderProps> = ({ children }) => {
         for (i = 0; i < promisedItems.length; i++) {
           const promise = promisedItems[i];
           const plant = await promise.then(function (it) {
+            var object; // TODO: extracted var from try scope
             try {
-              var object = JSON.parse(it.value);
+              object = JSON.parse(it.value);
             } catch (e) {
               return null;
             }
             console.log(typeof object);
             console.log(object);
-            if (object.userId === _id) { // check ownership of each object
+            if (object.userId === _id && object.status !== 2) { // check ownership of each object todo: AND IF IT WAS NOT DELETED LOCALLY
               return object;
             }
             return null;
@@ -179,36 +181,63 @@ export const PlantProvider: React.FC<ItemProviderProps> = ({ children }) => {
         console.log("(catch) ITEMS FROM getItems CALL: ")
         console.log(plantItems)
         const items = plantItems;
-        alert("OFFLINE!");
+        //alert("OFFLINE!");
+        console.log("//alert(\"OFFLINE!\");")
         dispatch({ type: FETCH_ITEMS_FAILED, payload: { items: items } });
       }
     }
   }
 
-  async function saveItemCallback(item: PlantProps) {
+  async function saveItemCallback(item: PlantProps, connected: boolean) { // TODO: modified in order to accept network status information
     try {
+      if (!connected){throw new Error()}
       log('saveItem started');
       dispatch({ type: SAVE_ITEM_STARTED });
+      item.version += 1;// TODO: data modified must increment its version number
       const savedItem = await (item._id ? updateItem(token, item) : createItem(token, item));
+      item.status = 0; // successfully sent to server
       log('saveItem succeeded');
       dispatch({ type: SAVE_ITEM_SUCCEEDED, payload: { item: savedItem } });
     } catch (error) {
       log('saveItem failed');
-      dispatch({ type: SAVE_ITEM_FAILED, payload: { error } });
+
+      // TODO: the apps stores data locally
+      item.status = 1; // todo: set the data status as MODIFIED OFFLINE
+      await Storage.set({ key: JSON.stringify(item._id), value: JSON.stringify(item) });
+
+
+
+      // TODO: Inform user about the items not sent to the server
+      alert("ITEM WAS SAVED LOCALLY!");
+
+      //dispatch({ type: SAVE_ITEM_FAILED, payload: { error } });
+      dispatch({ type: SAVE_ITEM_SUCCEEDED, payload: { item } });
     }
   }
 
-  async function deleteItemCallback(item: PlantProps) {
+  async function deleteItemCallback(item: PlantProps, connected: boolean) { // TODO: modified in order to accept network status information
     try {
+      if (!connected){throw new Error()}
       log("delete started");
       dispatch({type: DELETE_ITEM_STARTED});
+      item.version += 1;// TODO: data modified must increment its version number
       const deletedItem = await eraseItem(token, item);
       log("delete succeeded");
       console.log(deletedItem);
       dispatch({type: DELETE_ITEM_SUCCEEDED, payload: {item: item}});
     } catch (error) {
       log("delete failed");
-      dispatch({type: DELETE_ITEM_FAILED, payload: {error}});
+
+      // TODO: the apps stores data locally
+      item.status = 2; // todo: set the data status as DELETED OFFLINE
+      await Storage.set({key: JSON.stringify(item._id), value: JSON.stringify(item)});
+
+
+      // TODO: Inform user about the items not sent to the server
+      alert("ITEM WAS DELETED LOCALLY!");
+
+      //dispatch({type: DELETE_ITEM_FAILED, payload: {error}});
+      dispatch({type: DELETE_ITEM_SUCCEEDED, payload: {item: item}});
     }
   }
 

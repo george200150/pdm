@@ -27,7 +27,8 @@ import {PlantProps} from "./PlantProps";
 
 import {useAppState} from './useAppState';
 import {useNetwork} from './useNetwork';
-//import {useBackgroundTask} from "./useBackgroundTask";
+import {useBackgroundTask} from "./useBackgroundTask";
+import {Network, NetworkStatus} from "@capacitor/core";
 
 
 
@@ -36,10 +37,36 @@ const log = getLogger('PlantList');
 const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
     const {appState} = useAppState();
     const {networkStatus} = useNetwork();
-    /*useBackgroundTask(() => new Promise(resolve => {
+
+
+
+
+
+    useBackgroundTask(() => new Promise(resolve => {
         console.log("My Background Task");
-        resolve();
-    }));*/
+        continuouslyCheckNetwork();
+    }));
+
+
+    async function continuouslyCheckNetwork(){
+        const handler = Network.addListener('networkStatusChange', handleNetworkStatusChange);
+        Network.getStatus().then(handleNetworkStatusChange);
+        let canceled = false;
+        return () => {
+            canceled = true;
+            handler.remove();
+        }
+
+        function handleNetworkStatusChange(status: NetworkStatus) {
+            console.log('useNetwork - status change', status);
+            if (!canceled) {
+                // TODO: TRY TO SEND LOCAL DATA TO SERVER
+            }
+        }
+    }
+
+
+
 
   const { items, fetching, fetchingError } = useContext(ItemContext);
   const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(
@@ -133,6 +160,8 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
                     location={plant.location}
                     photo={plant.photo}
                     userId={plant.userId}
+                    status={plant.status}
+                    version={plant.version}
                     onEdit={(id) => history.push(`/plant/${id}`)}
                 />
             );

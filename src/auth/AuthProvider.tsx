@@ -85,8 +85,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       token: "",
     });
     (async () => {
-      await Storage.remove({ key: "user" });
-      await Storage.remove({ key: "_id" });
+      //await Storage.remove({ key: "user" });
+      //await Storage.remove({ key: "_id" });
+
+      /*var i;
+      await Storage.keys().then(function (allKeys) { // TODO: made app delete all data on logout -> ensures user ownership unicity
+
+        for (i = 0; i < allKeys.keys.length; i++) {
+          Storage.remove({key: allKeys.keys[i]});
+        }
+      });*/
+    await Storage.clear(); // snickers?
     })();
   }
 

@@ -6,4 +6,6 @@ export interface PlantProps {
   location: string;
   photo: string;
   userId: string;
+  status: number;
+  version: number;
 }

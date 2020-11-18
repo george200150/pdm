@@ -19,6 +19,7 @@ import { ItemContext } from './PlantProvider';
 import { RouteComponentProps } from 'react-router';
 import { PlantProps } from './PlantProps';
 import {AuthContext} from "../auth";
+import {useNetwork} from "./useNetwork";
 
 const log = getLogger('PlantEdit');
 
@@ -28,6 +29,7 @@ interface ItemEditProps extends RouteComponentProps<{
 
 const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
   const { items, saving, savingError, saveItem, deleteItem } = useContext(ItemContext);
+  const {networkStatus} = useNetwork();
 
   const { _id } = useContext(AuthContext);
 
@@ -41,6 +43,8 @@ const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
   const [item, setItem] = useState<PlantProps>();
 
   const [userId, setUserId] = useState(_id);
+  const [status, setStatus] = useState(1); // TODO: MARK AS LOCALLY MODIFIED (when REST call succeeds, the state is set to 0)
+  const [version, setVersion] = useState(-1);
 
   useEffect(() => {
     log('useEffect');
@@ -56,15 +60,15 @@ const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
     }
   }, [match.params.id, items]);
   const handleSave = () => {
-    const editedItem = item ? { ...item, name, hasFlowers, bloomDate, location, photo, userId } : { name, hasFlowers, bloomDate, location, photo, userId };
-    saveItem && saveItem(editedItem).then(() => history.goBack());
+    const editedItem = item ? { ...item, name, hasFlowers, bloomDate, location, photo, userId, status, version } : { name, hasFlowers, bloomDate, location, photo, userId, status, version };
+    saveItem && saveItem(editedItem, networkStatus.connected).then(() => history.goBack()); // TODO: changed signature in PlantProvider to accept network status as parameter
   };
 
   const handleDelete = () => {
     const editedItem = item
-        ? { ...item, name, hasFlowers, bloomDate, location, photo, userId }
-  : { name, hasFlowers, bloomDate, location, photo, userId };
-    deleteItem && deleteItem(editedItem).then(() => history.goBack());
+        ? { ...item, name, hasFlowers, bloomDate, location, photo, userId, status, version }
+  : { name, hasFlowers, bloomDate, location, photo, userId, status, version };
+    deleteItem && deleteItem(editedItem, networkStatus.connected).then(() => history.goBack()); // TODO: changed signature in PlantProvider to accept network status as parameter
   };
 
   log('render');
@@ -82,6 +86,9 @@ const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
       <IonContent>
 
         // TODO: use Cards insead of Ion ITEMS
+        <div>App state is {JSON.stringify(networkStatus)}</div>
+
+
         <IonItem>
           <IonLabel>Name: </IonLabel>
           <IonInput value={name} onIonChange={(e) => setName(e.detail.value || "")}/>

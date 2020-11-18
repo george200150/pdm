@@ -3,7 +3,7 @@ import { IonItem, IonLabel } from '@ionic/react';
 import { PlantProps } from './PlantProps';
 
 interface ItemPropsExt extends PlantProps {
-    onEdit: (_id?: string) => void;
+    onEdit: (id?: string) => void;
 }
 
 const Plant: React.FC<ItemPropsExt> = ({ _id, name, onEdit }) => {

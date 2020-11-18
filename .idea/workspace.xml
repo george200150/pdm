@@ -21,7 +21,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c599b773-102a-4217-ae4b-99fdd70af7cb" name="Default Changelist" comment="created architecture">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/AuthProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/garden/Plant.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/Plant.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/garden/PlantEdit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantEdit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/garden/PlantList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/garden/PlantProps.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantProps.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/garden/PlantProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantProvider.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/garden/plantApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/plantApi.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +54,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../my-ionic-app-auth (1)" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/FACULTATE A2S2/MPP/Git/proiect-colectiv/frontend/EasyOrder-Client" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -113,7 +118,8 @@
       <workItem from="1605552508366" duration="5583000" />
       <workItem from="1605560853443" duration="1865000" />
       <workItem from="1605564936890" duration="2008000" />
-      <workItem from="1605599996646" duration="4734000" />
+      <workItem from="1605599996646" duration="4785000" />
+      <workItem from="1605687871194" duration="11373000" />
     </task>
     <task id="LOCAL-00001" summary="created architecture">
       <created>1603531533439</created>
@@ -153,10 +159,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="210" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603527519674" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1605383027664">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1605687895866">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605383027664" />
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605687895866" />
     <state width="1899" height="282" key="GridCell.Tab.0.bottom" timestamp="1605484597935">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -203,23 +209,52 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/garden/PlantProvider.tsx</url>
-          <line>132</line>
+          <line>133</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/garden/PlantProvider.tsx</url>
-          <line>191</line>
+          <line>196</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/garden/PlantProvider.tsx</url>
-          <line>190</line>
+          <line>194</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/garden/PlantProvider.tsx</url>
-          <line>189</line>
+          <line>193</line>
           <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/garden/PlantList.tsx</url>
+          <line>164</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/garden/PlantList.tsx</url>
+          <line>156</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/garden/PlantList.tsx</url>
+          <line>155</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/garden/PlantList.tsx</url>
+          <line>154</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/garden/PlantProvider.tsx</url>
+          <line>195</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

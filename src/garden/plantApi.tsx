@@ -16,13 +16,15 @@ export const getItems: (token: string) => Promise<PlantProps[]> = (token) => {
       await Storage.set({
         key: plant._id!,
         value: JSON.stringify({
-          id: plant._id,
+          _id: plant._id,
           name: plant.name,
           hasFlowers: plant.hasFlowers,
           bloomDate: plant.bloomDate,
           location: plant.location,
           photo: plant.photo,
-          userId: plant.userId
+          userId: plant.userId,
+          status: 0, // TODO: all data retrieved from the server is NOT LOCALLY MODIFIED
+          version: plant.version
         }),
       });
     });
@@ -41,12 +43,15 @@ export const createItem: (
     await Storage.set({
       key: plant._id!,
       value: JSON.stringify({
-        id: plant._id,
+        _id: plant._id,
         name: plant.name,
         hasFlowers: plant.hasFlowers,
         bloomDate: plant.bloomDate,
         location: plant.location,
-        photo: plant.photo
+        userId: plant.userId,
+        photo: plant.photo,
+        status: 0,
+        version: plant.version
       }),
     });
   });
@@ -64,12 +69,15 @@ export const updateItem: (
     await Storage.set({
       key: plant._id!,
       value: JSON.stringify({
-        id: plant._id,
+        _id: plant._id,
         name: plant.name,
         hasFlowers: plant.hasFlowers,
         bloomDate: plant.bloomDate,
         location: plant.location,
-        photo: plant.photo
+        photo: plant.photo,
+        userId: plant.userId,
+        status: 0,
+        version: plant.version
       }),
     });
   });
