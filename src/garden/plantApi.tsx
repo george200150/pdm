@@ -15,17 +15,7 @@ export const getItems: (token: string) => Promise<PlantProps[]> = (token) => {
     result.data.forEach(async (plant: PlantProps) => {
       await Storage.set({
         key: plant._id!,
-        value: JSON.stringify({
-          _id: plant._id,
-          name: plant.name,
-          hasFlowers: plant.hasFlowers,
-          bloomDate: plant.bloomDate,
-          location: plant.location,
-          photo: plant.photo,
-          userId: plant.userId,
-          status: 0, // TODO: all data retrieved from the server is NOT LOCALLY MODIFIED
-          version: plant.version
-        }),
+        value: JSON.stringify(plant),
       });
     });
   });
@@ -36,51 +26,41 @@ export const getItems: (token: string) => Promise<PlantProps[]> = (token) => {
 export const createItem: (
     token: string,
     item: PlantProps
-) => Promise<PlantProps[]> = (token, plant) => {
+) => Promise<PlantProps> = (token, plant) => {
   var result = axios.post(itemUrl, plant, authConfig(token));
   result.then(async function (r) {
     var plant = r.data;
     await Storage.set({
       key: plant._id!,
-      value: JSON.stringify({
-        _id: plant._id,
-        name: plant.name,
-        hasFlowers: plant.hasFlowers,
-        bloomDate: plant.bloomDate,
-        location: plant.location,
-        userId: plant.userId,
-        photo: plant.photo,
-        status: 0,
-        version: plant.version
-      }),
+      value: JSON.stringify(plant),
     });
   });
   return withLogs(result, "createItem");
 };
 
 
+export const getItem: (token: string, id:string) => Promise<PlantProps> = (token,id) =>{
+  var result= axios.get(`${itemUrl}/${id}`,authConfig(token))
+  return withLogs(result, "getItem");
+}
+
+
 export const updateItem: (
     token: string,
     item: PlantProps
-) => Promise<PlantProps[]> = (token, plant) => {
+) => Promise<PlantProps> = (token, plant) => {
   var result = axios.put(`${itemUrl}/${plant._id}`, plant, authConfig(token));
-  result.then(async function (r) {
-    var plant = r.data;
-    await Storage.set({
-      key: plant._id!,
-      value: JSON.stringify({
-        _id: plant._id,
-        name: plant.name,
-        hasFlowers: plant.hasFlowers,
-        bloomDate: plant.bloomDate,
-        location: plant.location,
-        photo: plant.photo,
-        userId: plant.userId,
-        status: 0,
-        version: plant.version
-      }),
-    });
-  });
+  result
+      .then(async function (r) {
+        var item = r.data;
+        await Storage.set({
+          key: item._id!,
+          value: JSON.stringify(item),
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   return withLogs(result, "updateItem");
 };
 

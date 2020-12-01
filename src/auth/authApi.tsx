@@ -8,6 +8,9 @@ export interface AuthProps {
   _id: string;
 }
 
-export const login: (username?: string, password?: string) => Promise<AuthProps> = (username, password) => {
+export const login: (
+    username?: string,
+    password?: string
+) => Promise<AuthProps> = (username, password) => {
   return withLogs(axios.post(authUrl, { username, password }, config), 'login');
 }

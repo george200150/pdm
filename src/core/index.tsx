@@ -1,4 +1,5 @@
-export const baseUrl = 'localhost:3000';
+export const baseUrl = '192.168.1.5:3000';
+//export const baseUrl = 'localhost:3000'; - won't work on Android
 
 export const getLogger: (tag: string) => (...args: any) => void =
     tag => (...args) => console.log(tag, ...args);
@@ -17,7 +18,7 @@ export function withLogs<T>(promise: Promise<ResponseProps<T>>, fnName: string):
       return Promise.resolve(res.data);
     })
     .catch(err => {
-      log(`${fnName} - failed`);
+      log(`${fnName} - failed. ERROR: ${err}`);
       return Promise.reject(err);
     });
 }

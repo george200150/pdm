@@ -22,14 +22,13 @@ import { add } from 'ionicons/icons';
 import Plant from './Plant';
 import { getLogger } from '../core';
 import { ItemContext } from './PlantProvider';
-import {AuthContext} from "../auth";
-import {PlantProps} from "./PlantProps";
+import { AuthContext } from "../auth";
+import { PlantProps } from "./PlantProps";
 
-import {useAppState} from './useAppState';
-import {useNetwork} from './useNetwork';
-import {useBackgroundTask} from "./useBackgroundTask";
-import {Network, NetworkStatus} from "@capacitor/core";
-
+import { useAppState } from './useAppState';
+import { useNetwork } from './useNetwork';
+import { useBackgroundTask } from "./useBackgroundTask";
+import { Network, NetworkStatus } from "@capacitor/core";
 
 
 const log = getLogger('PlantList');
@@ -37,38 +36,7 @@ const log = getLogger('PlantList');
 const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
     const {appState} = useAppState();
     const {networkStatus} = useNetwork();
-
-
-
-
-
-    useBackgroundTask(() => new Promise(resolve => {
-        console.log("My Background Task");
-        continuouslyCheckNetwork();
-    }));
-
-
-    async function continuouslyCheckNetwork(){
-        const handler = Network.addListener('networkStatusChange', handleNetworkStatusChange);
-        Network.getStatus().then(handleNetworkStatusChange);
-        let canceled = false;
-        return () => {
-            canceled = true;
-            handler.remove();
-        }
-
-        function handleNetworkStatusChange(status: NetworkStatus) {
-            console.log('useNetwork - status change', status);
-            if (!canceled) {
-                // TODO: TRY TO SEND LOCAL DATA TO SERVER
-            }
-        }
-    }
-
-
-
-
-  const { items, fetching, fetchingError } = useContext(ItemContext);
+    const { saveItem, deleteItem, items, fetching, fetchingError, updateServer  } = useContext(ItemContext); // TODO: imported more from Provider (updateServer should solve networkStateChange)
   const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(
       false
   );
@@ -83,6 +51,18 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
     logout?.();
     return <Redirect to={{ pathname: "/login" }} />;
   };
+
+
+
+    useEffect(() => { // I had a hard time trying to make background tasks work...
+        if (networkStatus.connected) {
+            updateServer && updateServer();
+        }
+    }, [networkStatus.connected]);
+
+
+
+
   useEffect(() => {
     if (items?.length) {
       setItemsShow(items.slice(0, 16));
@@ -105,13 +85,13 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
       const boolType = filter === "has flowers";
       setItemsShow(items.filter((plant) => plant.hasFlowers === boolType));
     }
-  }, [filter]);
+  }, [filter, items]);
 
   useEffect(() => {
     if (search && items) {
       setItemsShow(items.filter((plant) => {if(search !== "-"){return plant.name.startsWith(search)}else{return true}}));
     }
-  }, [search]);
+  }, [search, items]);
   return (
       <IonPage>
         <IonHeader>
@@ -187,3 +167,45 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
 };
 
 export default PlantList;
+
+
+
+/*
+    useBackgroundTask(() => new Promise(resolve => {
+        console.log("My Background Task");
+        continuouslyCheckNetwork();
+    }));
+
+
+    async function continuouslyCheckNetwork() {
+        const handler = Network.addListener('networkStatusChange', handleNetworkStatusChange);
+        Network.getStatus().then(handleNetworkStatusChange);
+        let canceled = false;
+        return () => {
+            canceled = true;
+            handler.remove();
+        }
+
+        function handleNetworkStatusChange(status: NetworkStatus) {
+            console.log('useNetwork - status change - PLANT LIST . TSX', status);
+            if (!canceled && status.connected) {
+                console.log('if (!canceled && status.connected) {')
+                var i;
+                console.log(itemsShow)
+                console.log(itemsShow.length)
+                for (i = 0; i < itemsShow.length; i++) { // version === 0 means that items are up to date with server data
+                    var plant = itemsShow[i];
+                    if (plant.version === 1) { // save/update locally modified items
+                        console.log("if (plant.version === 1) { // save/update locally modified items")
+                        //saveItemCallback(plant, status.connected)
+                        saveItem && saveItem(plant, networkStatus.connected).then(() => history.goBack());
+                    } else if (plant.version === 2) { // delete locally deleted items
+                        console.log("} else if (plant.version === 2) { // delete locally deleted items")
+                        //deleteItemCallback(plant, status.connected)
+                        deleteItem && deleteItem(plant, networkStatus.connected).then(() => history.goBack());
+                    }
+                }
+            }
+        }
+    }
+*/
