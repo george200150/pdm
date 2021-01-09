@@ -21,14 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c599b773-102a-4217-ae4b-99fdd70af7cb" name="Default Changelist" comment="created architecture">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/authApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/authApi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/garden/Plant.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/Plant.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/garden/PlantEdit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantEdit.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/garden/PlantList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/garden/PlantProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/PlantProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/garden/plantApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/garden/plantApi.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +50,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/FACULTATE A2S2/MPP/Git/proiect-colectiv/frontend/EasyOrder-Client" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -67,7 +62,13 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\George\WebstormProjects\pdm\public\assets" />
+      <recent name="C:\Users\George\WebstormProjects\pdm\public" />
       <recent name="C:\Users\George\WebstormProjects\pdm\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\George\WebstormProjects\pdm\public" />
+      <recent name="C:\Users\George\WebstormProjects\pdm\src\core" />
     </key>
   </component>
   <component name="RunManager">
@@ -123,6 +124,11 @@
       <workItem from="1605687871194" duration="18403000" />
       <workItem from="1606143108087" duration="12801000" />
       <workItem from="1606400239918" duration="6000" />
+      <workItem from="1606841502755" duration="658000" />
+      <workItem from="1606923065269" duration="2752000" />
+      <workItem from="1607007918118" duration="1200000" />
+      <workItem from="1607762435162" duration="1199000" />
+      <workItem from="1610183103883" duration="3179000" />
     </task>
     <task id="LOCAL-00001" summary="created architecture">
       <created>1603531533439</created>
@@ -217,22 +223,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/garden/PlantList.tsx</url>
-          <line>144</line>
+          <line>202</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/garden/PlantList.tsx</url>
-          <line>136</line>
+          <line>194</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/garden/PlantList.tsx</url>
-          <line>135</line>
+          <line>193</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/garden/PlantList.tsx</url>
-          <line>134</line>
+          <line>192</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>

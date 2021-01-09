@@ -18,6 +18,7 @@ import {
   IonSelectOption,
   IonSearchbar
 } from '@ionic/react';
+import { createAnimation } from "@ionic/react";
 import { add } from 'ionicons/icons';
 import Plant from './Plant';
 import { getLogger } from '../core';
@@ -92,6 +93,55 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
       setItemsShow(items.filter((plant) => {if(search !== "-"){return plant.name.startsWith(search)}else{return true}}));
     }
   }, [search, items]);
+
+
+
+
+// TODO: Use basic animation, 3p
+    function simpleAnimation() {
+        const el = document.querySelector(".networkStatus");
+        if (el) {
+            const animation = createAnimation()
+                .addElement(el)
+                .duration(5000)
+                .direction("alternate")
+                .iterations(Infinity)
+                .keyframes([
+                    { offset: 0, transform: "scale(1)", opacity: "1" },
+                    {
+                        offset: 1,
+                        transform: "scale(0.5)",
+                        opacity: "0.5",
+                    },
+                ]);
+            animation.play();
+        }
+    }
+    useEffect(simpleAnimation, []);
+
+
+// TODO: Use grouped animations, 2p
+    function groupAnimations() {
+        const elB = document.querySelector('.searchBar');
+        const elC = document.querySelector('.select');
+        if (elB && elC) {
+            const animationA = createAnimation()
+                .addElement(elB)
+                .fromTo('transform', 'scale(1)','scale(0.75)');
+            const animationB = createAnimation()
+                .addElement(elC)
+                .fromTo('transform', 'rotate(0)', 'rotate(180deg)');
+            const parentAnimation = createAnimation()
+                .duration(10000)
+                .addAnimation([animationA, animationB]);
+            parentAnimation.play();    }
+    }
+    useEffect(groupAnimations, []);
+
+
+
+
+
   return (
       <IonPage>
         <IonHeader>
@@ -102,6 +152,8 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
         </IonHeader>
         <IonContent fullscreen>
           <IonLoading isOpen={fetching} message="Fetching plants" />
+
+            <div className="searchBar">
           <IonSearchbar
     value={search}
     debounce={500}
@@ -113,6 +165,8 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
       }
     }}
     />
+            </div>
+            <div className="select">
           <IonSelect
               value={filter}
               placeholder="Select flowers"
@@ -124,9 +178,13 @@ const PlantList: React.FC<RouteComponentProps> = ({ history }) => {
                 </IonSelectOption>
             ))}
           </IonSelect>
+            </div>
 
-          <div>App state is {JSON.stringify(appState)}</div>
-          <div>Network status is {JSON.stringify(networkStatus)}</div>
+            <div>App state is {JSON.stringify(appState)}</div>
+            <div className="networkStatus">
+                Network is {networkStatus.connected ? "online" : "offline"}
+            </div>
+
 
           {itemsShow &&
           itemsShow.map((plant: PlantProps) => {

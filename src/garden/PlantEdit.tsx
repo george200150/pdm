@@ -14,6 +14,7 @@ import {
   IonItem,
   IonDatetime
 } from '@ionic/react';
+import { createAnimation } from "@ionic/react";
 import { getLogger } from '../core';
 import { ItemContext } from './PlantProvider';
 import { RouteComponentProps } from 'react-router';
@@ -119,6 +120,28 @@ export const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
     deleteItem && deleteItem(editedItem, networkStatus.connected).then(() => history.goBack()); // TODO: changed signature in PlantProvider to accept network status as parameter
   };
 
+  // TODO: Chain animations, 2p
+  function chainAnimations() {
+    const elB = document.querySelector('.plantName');
+    const elC = document.querySelector('.plantFlowers');
+    if (elB && elC) {
+      const animationA = createAnimation()
+          .addElement(elB)
+          .duration(5000)
+          .fromTo('transform', 'rotate(0)', 'rotate(45deg)');
+
+      const animationB = createAnimation()
+          .addElement(elC)
+          .duration(7000)
+          .fromTo('transform', 'scale(1)', 'scale(0.8)');
+      (async () => {
+        await animationA.play();
+        await animationB.play();
+      })();
+    }
+  }
+  useEffect(chainAnimations, []);
+
   log('render');
 
   if (itemV2){
@@ -140,7 +163,9 @@ export const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
 
 
             <IonItem>
+              <div className="plantName">
               <IonLabel>Name: </IonLabel>
+              </div>
               <IonInput value={name} onIonChange={(e) => setName(e.detail.value || "")}/>
             </IonItem>
 
@@ -184,7 +209,7 @@ export const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
                     <IonCheckbox checked={itemV2.hasFlowers} disabled />
                   </IonItem>
 
-                  <IonDatetime value={itemV2.bloomDate} disabled></IonDatetime>
+                  <IonDatetime value={itemV2.bloomDate} disabled/>
 
                   <IonButton onClick={handleConflict1}>Choose V1</IonButton>
                   <IonButton onClick={handleConflict2}>Choose V2</IonButton>
@@ -237,7 +262,9 @@ export const PlantEdit: React.FC<ItemEditProps> = ({ history, match }) => {
             </IonItem>
 
             <IonItem>
-              <IonLabel>HasFlowers: </IonLabel>
+              <div className="plantFlowers">
+                <IonLabel>HasFlowers: </IonLabel>
+              </div>
               <IonCheckbox checked={hasFlowers} onIonChange={(e) => setHasFlowers(e.detail.checked)}/>
             </IonItem>
             <IonItem>
